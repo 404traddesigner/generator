@@ -1,0 +1,1082 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>404: trad-designer</title>
+  <link href="https://fonts.googleapis.com/css2?family=Young+Serif&family=Inter:wght@300;500&display=swap" rel="stylesheet">
+  <style>
+    * {margin:0;padding:0;box-sizing:border-box;}
+    body {
+      font-family:'Inter', sans-serif;
+      background:#ff0000;
+      color:#fff;
+      overflow-x:hidden;
+    }
+
+    header {
+      position:fixed;
+      top:0;
+      left:0;
+      width:100%;
+      display:flex;
+      justify-content: space-between;
+      background:#fff;
+      z-index:1000;
+      padding:20px 30px 1;
+    }
+
+    header::after {
+      content:'';
+      position:absolute;
+      bottom:0;
+      left:0;
+      width:100%;
+      height:4px;
+      background:#fff;
+      z-index:1;
+    }
+
+    header button {
+      font-family:'Inter', sans-serif;
+      font-size:1.3rem;
+      font-weight:500;
+      background:#ff0000;
+      color:#fff;
+      border:3px solid #fff;
+      border-radius:20px 20px 0 0;
+      padding:18px 40px;
+      cursor:pointer;
+      transition:all .3s;
+      margin-right:0;
+      position:relative;
+      border-bottom:4px solid #fff;
+      z-index:2;
+    }
+
+    header button:hover {
+      background:rgba(255,0,0,0.9);
+    }
+
+    header button.active {
+      background:#ff0000;
+      color:#fff;
+      border-bottom:4px solid #ff0000;
+      padding-bottom:22px;
+      z-index:3;
+    }
+
+    header button:first-child {
+      margin-right:auto;
+    }
+
+    .mobile-header {
+      display:none;
+      position:fixed;
+      top:0;
+      left:0;
+      width:100%;
+      background:#fff;
+      z-index:1000;
+      padding:20px 30px;
+      align-items:center;
+      justify-content:space-between;
+      border-bottom:4px solid #fff;
+    }
+
+    .mobile-header-title {
+      font-family:'Inter', sans-serif;
+      font-size:1.2rem;
+      font-weight:500;
+      color:#ff0000;
+      cursor: pointer;
+    }
+
+    .hamburger {
+      width:30px;
+      height:24px;
+      display:flex;
+      flex-direction:column;
+      justify-content:space-between;
+      cursor:pointer;
+      background:transparent;
+      border:none;
+      padding:0;
+      position: relative;
+    }
+
+    .hamburger span {
+      width:100%;
+      height:3px;
+      background:#ff0000;
+      transition:all .3s;
+    }
+
+    .hamburger.active span {
+      opacity:0;
+    }
+
+    .hamburger.active::before,
+    .hamburger.active::after {
+      content:'';
+      position:absolute;
+      width:30px;
+      height:3px;
+      background:#ff0000;
+      top:50%;
+      transition:all .3s;
+    }
+
+    .hamburger.active::before {
+      transform:rotate(45deg);
+    }
+
+    .hamburger.active::after {
+      transform:rotate(-45deg);
+    }
+
+    .side-menu {
+      position:fixed;
+      top:0;
+      right:-100%;
+      width:100%;
+      max-width:100%;
+      height:100vh;
+      background:#fff;
+      z-index:999;
+      transition:right .3s;
+      padding-top:0;
+      display:flex;
+      flex-direction:column;
+    }
+
+    .side-menu.active {
+      right:0;
+    }
+
+    .side-menu-top {
+      height:80px;
+      background:#fff;
+      display:flex;
+      align-items:center;
+      justify-content:flex-end;
+      padding:0 30px;
+      border-bottom:4px solid #fff;
+    }
+
+    .side-menu-content {
+      flex:1;
+      background:#fff;
+      display:flex;
+      flex-direction:column;
+      padding: 0;
+    }
+
+    .side-menu button {
+      width:100%;
+      background:#ff0000;
+      color:#fff;
+      border:3px solid #fff;
+      border-radius: 20px 20px 0 0;
+      border-bottom: 3px solid #fff;
+      padding:18px 30px;
+      font-family:'Inter', sans-serif;
+      font-size:1.3rem;
+      font-weight:500;
+      text-align:center;
+      cursor:pointer;
+      transition:all .3s;
+      margin: 0;
+      position: relative;
+    }
+
+    .side-menu button:last-child {
+      border-radius: 20px 20px 0 0;
+      border-bottom: none;
+      flex: 1;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      padding-top: 18px;
+    }
+
+    .menu-overlay {
+      position:fixed;
+      top:0;
+      left:0;
+      width:100%;
+      height:100vh;
+      background:rgba(0,0,0,0.5);
+      z-index:998;
+      display:none;
+    }
+
+    .menu-overlay.active {
+      display:block;
+    }
+
+    main {
+      min-height:100vh;
+      padding:clamp(150px, 20vh, 250px) 5vw 60px;
+      max-width:1400px;
+      margin:auto;
+    }
+
+    .hero {
+      min-height:calc(100vh - 130px);
+      display:flex;
+      flex-direction:column;
+      /*justify-content:center;*/
+    }
+
+    h1 {
+      font-family:'Young Serif', serif;
+      font-size:clamp(2.5rem, 4vw, 5.5rem);
+      font-weight:200;
+      line-height:1.1;
+      margin-bottom:80px;
+      margin-top:0;
+    }
+
+    h2 {
+      font-family:'Inter', sans-serif;
+      font-size:1rem;
+      font-weight:500;
+      letter-spacing:2px;
+      margin-bottom:30px;
+    }
+
+    .pills {
+      display:flex;
+      flex-wrap:wrap;
+      gap:15px;
+      margin-bottom:30px;
+    }
+
+    .pill {
+      background:#fff;
+      color:#ff0000;
+      border:none;
+      border-radius:50px;
+      padding:18px 35px;
+      font-family:'Young Serif', serif;
+      font-size:1.3rem;
+      display:flex;
+      align-items:center;
+      gap:15px;
+      cursor:pointer;
+      transition:transform .2s;
+      position:relative;
+    }
+
+    .pill:hover {
+      transform:translateY(-1px);
+    }
+
+    .pill-check {
+      width:28px;
+      height:28px;
+      border:3px solid #ff0000;
+      border-radius:50%;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      flex-shrink:0;
+      transition:all .1s;
+      position:relative;
+      background: #fff;
+      margin-left: -10px;
+    }
+
+    .pill.locked .pill-check {
+      background:#fff;
+      border-color:#ff0000;
+    }
+
+    .pill.locked .pill-check::after {
+      content:'';
+      position:absolute;
+      width:5px;
+      height:14px;
+      border:solid #ff0000;
+      border-width:0 3px 3px 0;
+      top:0px;
+      left:9px;
+      transform:rotate(45deg) scale(1.3);
+    }
+
+    .controls {
+      display:flex;
+      align-items:center;
+      gap:30px;
+      flex-wrap:nowrap;
+    }
+
+    .icon-btn {
+      height:65px;
+      min-width:65px;
+      border:3px solid #fff;
+      border-radius:50%;
+      background:#ff0000;
+      color:#fff;
+      cursor:pointer;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:24px;
+      transition:all .3s;
+      padding:0;
+    }
+
+    .icon-btn:hover {
+      background:#fff;
+      color:#ff0000;
+      transform:scale(1.05);
+    }
+
+    .icon-btn svg {
+      width:28px;
+      height:28px;
+      stroke-width:2;
+    }
+
+    .control-group {
+      display:flex;
+      align-items:center;
+      gap:15px;
+      border:3px solid #fff;
+      border-radius:65px;
+      padding:13px 25px;
+      height:65px;
+    }
+
+    .control-group span {
+      font-family:'Inter', sans-serif;
+      font-size:1rem;
+      font-weight:500;
+      padding:0 10px;
+    }
+
+    .control-group-buttons {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      margin-left: auto;
+      margin-right: -10px;
+    }
+
+    .control-group button {
+      background:#ff0000;
+      color:#fff;
+      border:3px solid #fff;
+      border-radius:50px;
+      padding:10px 25px;
+      font-family:'Inter', sans-serif;
+      font-size:1rem;
+      font-weight:500;
+      cursor:pointer;
+      transition:all .3s;
+      height:39px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      min-width:39px;
+      white-space: nowrap;
+    }
+
+    .control-group button.number {
+      border-radius:50%;
+      width:39px;
+      padding:0;
+    }
+
+    .control-group button:hover {
+      background:#fff;
+      color:#ff0000;
+      transform:scale(1.05);
+    }
+
+    .control-group button.active {
+      background:#fff;
+      color:#ff0000;
+    }
+
+    .divider {
+      width:100vw;
+      height:4px;
+      background:#fff;
+      margin:60px 0 80px;
+      position:relative;
+      left:50%;
+      transform:translateX(-50%);
+    }
+
+    .remember-section {
+      min-height:calc(100vh - 200px);
+      display:flex;
+      flex-direction:column;
+      justify-content:space-between;
+      text-align:left;
+      padding-top:0;
+    }
+
+    .remember-section h1 {
+      margin-bottom:0;
+    }
+
+    .emoji-art {
+      font-size:clamp(4rem, 15vw, 12rem);
+      opacity:0.9;
+      text-align:right;
+      align-self:flex-end;
+    }
+
+    .content-page {
+      display:none;
+      padding:160px 5vw 60px;
+      max-width:1400px;
+      margin:auto;
+      line-height:1.8;
+    }
+
+    .content-page.active {
+      display:block;
+    }
+
+    .content-page h1 {
+      font-family:'Young Serif', serif;
+      font-size:clamp(2.5rem, 7vw, 5.5rem);
+      font-weight:300;
+      margin-bottom:80px;
+      line-height:1.1;
+    }
+
+    .content-page p {
+      font-size:1.1rem;
+      margin-bottom:20px;
+      max-width:900px;
+    }
+
+    .manifesto-list {
+      max-width:900px;
+    }
+
+    .manifesto-item {
+      margin-bottom: 50px;
+    }
+
+    .manifesto-title {
+      font-family:'Young Serif', serif;
+      font-size:clamp(6rem, 5vw, 3rem);
+      font-weight:300;
+      line-height:1.2;
+      margin-bottom:15px;
+    }
+
+    .manifesto-description {
+      font-size:1.1rem;
+      line-height:1.6;
+      margin-top:50px;
+      margin-bottom:100px;
+    }
+
+    .email-link {
+      color: #fff;
+      text-decoration: none;
+      font-size: 1.1rem;
+      display: inline-block;
+      margin: 15px 0;
+      cursor: pointer;
+      transition: all 0.3s;
+      text-decoration: underline;
+    }
+
+    .email-link:hover {
+      color: #ffcccc;
+      text-decoration: underline;
+    }
+
+    .download-link {
+      color: #fff;
+      text-decoration: none;
+      font-size: 1.1rem;
+      display: block;
+      margin: 15px 0;
+      cursor: pointer;
+      transition: all 0.3s;
+      text-decoration: underline;
+    }
+
+    .download-link:hover {
+      color: #ffcccc;
+      text-decoration: underline;
+    }
+
+    .download-btn {
+      display:inline-block;
+      background:#fff;
+      color:#ff0000;
+      border:3px solid #fff;
+      border-radius:50px;
+      padding:15px 35px;
+      font-family:'Inter', sans-serif;
+      font-size:1.1rem;
+      font-weight:500;
+      text-decoration:none;
+      margin:10px 10px 10px 0;
+      cursor:pointer;
+      transition:all .3s;
+    }
+
+    .download-btn:hover {
+      background:#ff0000;
+      color:#fff;
+      transform:scale(1.05);
+    }
+
+    .toast {
+      position:fixed;
+      bottom:30px;
+      left:50%;
+      transform:translateX(-50%) translateY(100px);
+      background:#fff;
+      color:#ff0000;
+      padding:20px 40px;
+      border-radius:50px;
+      font-family:'Young Serif', serif;
+      font-size:1.1rem;
+      opacity:0;
+      transition:all .3s;
+      z-index:2000;
+    }
+
+    .toast.show {
+      opacity:1;
+      transform:translateX(-50%) translateY(0);
+    }
+
+    @media (max-width:768px) {
+      header {
+        display:none;
+      }
+      .mobile-header {
+        display:flex;
+      }
+      main {
+        padding:100px 5vw 60px;
+      }
+      h1 {
+        font-size:clamp(1.8rem, 8vw, 2.5rem);
+        margin-bottom:40px;
+        margin-top:0;
+      }
+      .remember-section h1 {
+        font-size: clamp(1.5rem, 6vw, 2rem);
+      }
+      h2 {
+        font-size:0.9rem;
+      }
+      .pills {
+        gap:10px;
+      }
+      .pill {
+        font-size:1rem;
+        padding:12px 25px;
+        gap:10px;
+      }
+      .pill-check {
+        width:28px;
+        height:28px;
+        border:2px solid #ff0000;
+        margin-left: -10px;
+      }
+      .pill.locked .pill-check::after {
+        content:'';
+        position:absolute;
+        width:5px;
+        height:14px;
+        border:solid #ff0000;
+        border-width:0 2px 2px 0;
+        top:0px;
+        left:9px;
+        transform:rotate(45deg) scale(1.3);
+      }
+      .controls {
+        gap:10px;
+        flex-wrap:wrap;
+        flex-direction:row;
+        width:100%;
+      }
+      .icon-btn {
+        height:50px;
+        min-width:50px;
+        border:2px solid #fff;
+      }
+      .icon-btn svg {
+        width:22px;
+        height:22px;
+      }
+      .control-group {
+        width:100%;
+        justify-content:space-between;
+        border:2px solid #fff;
+        border-radius:50px;
+        padding:10px 20px;
+        height:auto;
+        min-height:50px;
+      }
+      .control-group span {
+        font-size:0.85rem;
+        padding:0;
+        margin-right: auto;
+      }
+      .control-group-buttons {
+        gap: 8px;
+        margin-left: auto;
+      }
+      .control-group button {
+        border:2px solid #fff;
+        padding:8px 16px;
+        font-size:0.85rem;
+        height:32px;
+        min-width:32px;
+      }
+      .control-group button.number {
+        width:32px;
+        padding:0;
+      }
+      .content-page {
+        padding:100px 5vw 60px;
+      }
+      .remember-section {
+        min-height:calc(100vh - 150px);
+      }
+      .emoji-art {
+        font-size:clamp(3rem, 12vw, 8rem);
+      }
+      
+      .side-menu button {
+        font-size: 1.1rem;
+        padding: 15px 20px;
+      }
+
+      .manifesto-title {
+        font-size: clamp(1.8rem, 6vw, 2.2rem);
+      }
+      
+      .manifesto-description {
+        margin-left: 10px;
+        font-size: 1rem;
+      }
+    }
+
+    @keyframes shuffle {
+      0%, 100% { transform:translateY(0); opacity:1; }
+      50% { transform:translateY(-10px); opacity:0.5; }
+    }
+
+    .pill.shuffling .pill-text {
+      animation:shuffle .1s ease-in-out;
+    }
+  </style>
+</head>
+<body>
+  <div class="mobile-header">
+    <div class="mobile-header-title" id="mobileTitle" onclick="showPage('home')">404: trad-designer</div>
+    <button class="hamburger" onclick="toggleMenu()" id="hamburger">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+  </div>
+
+  <div class="menu-overlay" id="menuOverlay" onclick="toggleMenu()"></div>
+  
+  <div class="side-menu" id="sideMenu">
+    <div class="side-menu-top">
+      <button class="hamburger active" onclick="toggleMenu()" id="hamburgerClose">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div class="side-menu-content">
+      <button onclick="showPage('home')" id="mobile-btn-home">404: trad-designer</button>
+      <button onclick="showPage('project')" id="mobile-btn-project">the project</button>
+      <button onclick="showPage('manifesto')" id="mobile-btn-manifesto">manifesto</button>
+      <button onclick="showPage('toolbox')" id="mobile-btn-toolbox">toolbox</button>
+      <button onclick="showPage('opensource')" id="mobile-btn-opensource">open source</button>
+    </div>
+  </div>
+
+  <header>
+    <button onclick="showPage('home')" class="active" id="btn-home">404: trad-designer</button>
+    <button onclick="showPage('project')" id="btn-project">the project</button>
+    <button onclick="showPage('manifesto')" id="btn-manifesto">manifesto</button>
+    <button onclick="showPage('toolbox')" id="btn-toolbox">toolbox</button>
+    <button onclick="showPage('opensource')" id="btn-opensource">open source</button>
+  </header>
+
+  <main id="page-home">
+    <div class="hero">
+      <h1>Don't Be A Trad-Designer,<br>Make Your Own Feminist<br>Design Recipe!</h1>
+      
+      <h2>INGREDIENTS</h2>
+      
+      <div class="pills" id="pillsContainer"></div>
+
+      <div class="controls">
+        <button class="icon-btn" onclick="refreshRecipe()" title="Refresh">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" d="M17.651 7.65a7.131 7.131 0 0 0-12.68 3.15M18.001 4v4h-4m-7.652 8.35a7.13 7.13 0 0 0 12.68-3.15M6 20v-4h4"/>
+          </svg>
+        </button>
+        <button class="icon-btn" onclick="copyRecipe()" title="Copy">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <path stroke="currentColor" stroke-linejoin="round" d="M9 8v3a1 1 0 0 1-1 1H5m11 4h2a1 1 0 0 0 1-1V5a1 1 0 0 0-1-1h-7a1 1 0 0 0-1 1v1m4 3v10a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1v-7.13a1 1 0 0 1 .24-.65L7.7 8.35A1 1 0 0 1 8.46 8H13a1 1 0 0 1 1 1Z"/>
+          </svg>
+        </button>
+        
+        <div class="control-group">
+          <span>DESIGN</span>
+          <div class="control-group-buttons">
+            <button onclick="setCategory('domestic')" class="active" id="cat-domestic">DOMESTIC</button>
+            <button onclick="setCategory('general')" id="cat-general">GENERAL</button>
+          </div>
+        </div>
+
+        <div class="control-group">
+          <span>INGREDIENTS</span>
+          <div class="control-group-buttons">
+            <button onclick="setMode('4')" class="active number" id="mode-4">4</button>
+            <button onclick="setMode('5')" class="number" id="mode-5">5</button>
+            <button onclick="setMode('whatif')" id="mode-whatif">WHAT IF</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="remember-section">
+      <h1>Remember:<br>There Is No Right Preparation!</h1>
+      <div class="emoji-art">(◔◡◔✿)</div>
+    </div>
+  </main>
+
+  <div class="content-page" id="page-project">
+    <h1>The Project</h1>
+    <p>404: trad-designer is a digital experiment disguised as a brainstorming tool, but ultimately a space for feminist inquiry into product design.</p>
+    <p>This project was born from the anger of realizing that the everyday design world still bears the fingerprints of patriarchy. Every product holds untold stories of gender, labor, and power. This word generator exists to reveal those traces, empowering alternative thinking and creative resistance.</p>
+    <p>The website relies on a word-based archive system that allows for 2.29 billion possible combinations. It operates without any Western male-centered, biased AI, letting anyone blend design terminology with feminist vocabulary to generate speculative design prompts. 404: trad-designer is deliberately human, critical, and feminist.</p>
+    <p>Here, words mix, remix, blend, and collide, forming prompts that sound unexpected, sometimes unthinkable, and always political.</p>
+    <p>It's a free, open-source conceptual juxtaposition tool for preparing your own feminist design recipe, one word at a time, since the very beginning of the design process, whether you are creating or questioning a brief.</p>
+    <p>404: trad-designer doesn't promise perfect briefs or efficient solutions; it invites speculation, rebellion, and reconstruction.</p>
+    <p>Don't be a trad-designer. Design feminist futures.</p>
+    <p><a href="mailto:chiara.bottarelli.designer@gmail.com" class="email-link">chiara.bottarelli.designer@gmail.com</a></p>
+    <div class="emoji-art">(☆ᴗ☆)</div>
+  </div>
+
+  <div class="content-page" id="page-manifesto">
+    <h1>Manifesto</h1>
+    <div class="manifesto-list">
+      <div class="manifesto-item">
+        <div class="manifesto-title">1. Good design is transformative and intersectional.</div>
+        <div class="manifesto-description">Design challenges existing power structures and amplifies marginalized voices by addressing overlapping social identities and systemic inequalities, creating futures where diversity thrives.</div>
+      </div>
+      <div class="manifesto-item">
+        <div class="manifesto-title">2. Good design serves all users equally.</div>
+        <div class="manifesto-description">Design practices actively dismantle exclusionary norms by centering accessibility and inclusivity to ensure all bodies, identities, and abilities experience equitable benefit.</div>
+      </div>
+      <div class="manifesto-item">
+        <div class="manifesto-title">3. Good design  is value-driven and free from gender biases.</div>
+        <div class="manifesto-description">Design rejects patriarchal assumptions and stereotypes, embedding feminist values of equity, care, and justice into the core of the design process and outcomes. It prioritizes function and value over aesthetic differentiation or superficial appeal.</div>
+      </div>
+      <div class="manifesto-item">
+        <div class="manifesto-title">4. Good design  is transparent and benefit-focused</div>
+        <div class="manifesto-description">Design communicates openly about its intentions, impacts, and limitations while prioritizing the well-being and empowerment of people, ensuring that the design serves their needs ethically and respectfully.</div>
+      </div>
+      <div class="manifesto-item">
+        <div class="manifesto-title">5. Good design is anthropological</div>
+        <div class="manifesto-description">Design integrates a deep understanding of the cultural, historical, geographical, and social roots of the user, while consciously addressing the diverse biases present in both user and designer. It recognizes the complex social fabric shaping needs beyond normative narratives.</div>
+      </div>
+      <div class="manifesto-item">
+        <div class="manifesto-title">6. Good design is critical and reflexive.</div>
+        <div class="manifesto-description">Design operates as a continuous, self-reflective process, consistently scrutinizing its inherent biases, standpoint, and broader sociopolitical consequences. This iterative questioning promotes a culture of accountability and ongoing ethical reflection.</div>
+      </div>
+      <div class="manifesto-item">
+        <div class="manifesto-title">7. Good design is sustainable and systems-conscious.</div>
+        <div class="manifesto-description">Design embraces ecological and social sustainability, recognizing interdependence between human and non-human systems and advocating for regenerative futures.</div>
+      </div>
+      <div class="manifesto-item">
+        <div class="manifesto-title">8. Good design is not universal and not one-size-fits-all.</div>
+        <div class="manifesto-description">Design not only acknowledges, respects, and values difference, but also actively counteracts the data gaps resulting from the application of universal norms, such as the "Reference Man", which tend to erase or marginalize diverse identity markers.</div>
+      </div>
+      <div class="manifesto-item">
+        <div class="manifesto-title">9. Good design maximizes choice and adaptability.</div>
+        <div class="manifesto-description">Design empowers users by offering flexible, customizable, and personalized solutions that honor autonomy and evolving needs, rather than imposing rigid or prescriptive forms.</div>
+      </div>
+      <div class="manifesto-item">
+        <div class="manifesto-title">10. Good design is way more than just 10 principles.</div>
+        <div class="manifesto-description">Design is a dynamic and evolving practice, informed by ongoing feminist thought, community engagement, and the collective imagination of inclusive futures beyond fixed frameworks. In this sense, a feminist design manifesto cannot be reduced to a static set of ten principles; rather, it remains an ever-evolving and intangible constellation of feminist futures principles.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="content-page" id="page-toolbox">
+    <h1>Toolbox</h1>
+    <p>The Feminist Design Recipe Generator uses curated word banks across multiple categories:</p>
+    <p><strong>Imperative Design Verbs:</strong> Creative and constructive actions like brainstorm, build, craft, envision, transform.</p>
+    <p><strong>Domestic Product Nouns:</strong> Material anchors in the household sphere—from armchairs to windows.</p>
+    <p><strong>Process-Oriented Gerunds:</strong> Transformative interventions such as empowering, nurturing, reframing.</p>
+    <p><strong>Feminist-Oriented Concepts:</strong> Values and movements feminism promotes—accessibility, care, solidarity, justice.</p>
+    <p><strong>Design Nouns:</strong> Conceptual domains like systems, interfaces, methodologies, narratives.</p>
+    <p>Mix and match these elements to create your own provocations.</p>
+  </div>
+
+  <div class="content-page" id="page-opensource">
+    <h1>Open Source</h1>
+    <p>Make your own 404: trad-designer at home!</p>
+    <p>Download, print, and assemble it, no permission needed.</p>
+    <p>Feminist knowledge belongs to everyone and grows through sharing &lt;3</p>
+    <br>
+    <p>
+      <a class="download-link" onclick="downloadFile('instruction')">Instruction file: 404: trad-designer_instruction.pdf</a>
+      <a class="download-link" onclick="downloadFile('printing')">Printing file: 404: trad-designer_printing.pdf</a>
+    </p>
+    <div class="emoji-art">(✿^‿^)</div>
+  </div>
+
+  <div class="toast" id="toast">Recipe copied to clipboard!</div>
+
+  <script>
+    // Word banks aggiornate secondo le formule specificate
+    const wordBanks = {
+      //OK 🛠️ Imperative Design Verbs: 35
+      imperativeVerbs: ['brainstorm', 'build', 'conceptualize', 'configure', 'construct', 'craft', 'customize', 'design', 'develop', 'draw', 'envision', 'fabricate', 'furnish', 'generate', 'imagine', 'innovate', 'invent', 'make', 'model', 'personalize', 'photograph', 'picture', 'produce', 'prototype', 'realize', 'render', 'recycle', 'refurbish', 'repurpose', 'reshape', 'rethink', 'shape', 'sketch', 'transform', 'visualize'],
+      
+      //OK 🏠 Article + Domestic Product Nouns: 123
+      domesticNouns: ['an armchair', 'an appliance', 'an apron', 'a basket', 'a basin', 'a bassinet', 'a bathtub', 'a bed', 'a bench', 'a bin', 'a blanket', 'a blender', 'a bookcase', 'a bookshelf', 'a box', 'a broom', 'a brush', 'a bucket', 'a cabinet', 'a candle', 'a carpet', 'a chair', 'a chest', 'a clock', 'a coaster', 'a colander', 'a console', 'a container', 'a cooker', 'a couch', 'a cradle', 'a crib', 'a cup', 'a cushion', 'a curtain', 'cutlery', 'a desk', 'a dishwasher', 'a dollhouse', 'a door', 'a doormat', 'a drawer', 'a dustpan', 'a footstool', 'a fork', 'a fridge', 'a gameboard', 'a glass', 'a hairdryer', 'a handle', 'a hanger', 'a headboard', 'a heater', 'a hook', 'an iron', 'a jar', 'a jug', 'a juicer', 'a kettle', 'a knife', 'a knob', 'a ladle', 'a lamp', 'a laundry basket', 'a mattress', 'a mat', 'a mirror', 'a mop', 'a mortar', 'a mug', 'a napkin', 'a nightstand', 'a nutcracker', 'an ottoman', 'an oven', 'a pan', 'a peephole', 'a frame', 'a pillow', 'a planter', 'a plate', 'a pot', 'a radiator', 'a rack', 'a remote', 'a rug', 'a scale', 'a grinder', 'a shelf', 'a shower', 'a showerhead', 'a sideboard', 'a sink', 'a sofa', 'a spatula', 'a speaker', 'a sponge', 'a spoon', 'a stool', 'storage', 'a stove', 'a strainer', 'a switch', 'a table', 'a tablecloth', 'a teapot', 'a thermostat', 'a tile', 'a toilet', 'a toothbrush', 'a towel', 'a toy', 'a tray', 'a trivet', 'a vacuum', 'a vase', 'wallpaper', 'a wardrobe', 'a washer', 'a wastebasket', 'a window', 'a worktop'],
+      
+      //OK Indefinite Article + Product Noun: 153 (per categoria General)
+      generalNouns: ['an accessory', 'an apparatus', 'an applicator', 'an app', 'an ashtray', 'an avatar', 'a badge', 'a ball', 'a bar', 'a bead', 'a bicycle', 'a blade', 'a board', 'a bolt', 'a bottle', 'a bra', 'a breast pump', 'a brick', 'a calendar', 'a camera', 'a cane', 'a card', 'a card game', 'a cartridge', 'a charger', 'a clock', 'a coat', 'a code', 'a coin', 'a collar', 'a comb', 'a comic', 'a computer', 'a console', 'a controller', 'a conveyor', 'a costume', 'a crate', 'a cube', 'a cup', 'a cursor', 'a device', 'a diagram', 'a diaper', 'a dice', 'a disc', 'a display', 'a doll', 'a drone', 'a drum', 'an earring', 'an engine', 'an envelope', 'an eraser', 'an exhibit', 'an eyepiece', 'a fabric', 'a fan', 'a faucet', 'a filter', 'a flag', 'a flashlight', 'a flask', 'a flipchart', 'a flipper', 'a flute', 'a flyer', 'a folder', 'a font', 'a fork', 'a form', 'a frame', 'a funnel', 'a furniture', 'a gadget', 'a game', 'a garment', 'a gear', 'a generator', 'a glove', 'a glue', 'a goggles', 'a grid', 'a grip', 'a guitar', 'a hammer', 'a handle', 'a hanger', 'a harness', 'a hat', 'a headset', 'a helmet', 'a hinge', 'a hook', 'a hoop', 'a hose', 'an icon', 'an instrument', 'an interface', 'an iron', 'a jacket', 'a jar', 'a jeans', 'a joystick', 'a jug', 'a key', 'a keyboard', 'a kit', 'a kite', 'a knob', 'a label', 'a ladder', 'a lamp', 'a leash', 'a lens', 'a lever', 'a lid', 'a line', 'a link', 'a lock', 'a logo', 'a loom', 'a machine', 'a magazine', 'a magnet', 'a map', 'a marker', 'a mask', 'a material', 'a medal', 'a meter', 'a microphone', 'a microscope', 'a mirror', 'a mitt', 'a mixer', 'a modem', 'a module', 'a mold', 'a monitor', 'a monument', 'a mop', 'a motor', 'a mouse', 'a mug', 'a nail', 'a necklace', 'a needle', 'a net', 'a notebook', 'an ornament', 'an outlet', 'an oven', 'an overlay', 'a package', 'a pad', 'a paddle', 'a paint', 'a palette', 'a panel', 'a paper', 'a parachute', 'a patch', 'a pattern', 'a pedal', 'a pen', 'a pencil', 'a pendant', 'a pepper', 'a phone', 'a photograph', 'a pick', 'a picture', 'a pin', 'a pipe', 'a pistol', 'a planet', 'a plant', 'a platform', 'a plug', 'a pole', 'a post', 'a poster', 'a pot', 'a printer', 'a probe', 'a product', 'a projector', 'a prop', 'a propeller', 'a pump', 'a puzzle', 'a radio', 'a rail', 'a rake', 'a ramp', 'a ring', 'a robot', 'a rocket', 'a rod', 'a roller', 'a rope', 'a router', 'a ruler', 'a saddle', 'a saw', 'a scale', 'a scanner', 'a screen', 'a screw', 'a seal', 'a sensor', 'a server', 'a shade', 'a shaft', 'a sheet', 'a shelf', 'a shield', 'a shirt', 'a shoe', 'a shovel', 'a sign', 'a sink', 'a skate', 'a sketch', 'a ski', 'a slide', 'a slot', 'a soap', 'a socket', 'a software', 'a spade', 'a spanner', 'a speaker', 'a sphere', 'a spike', 'a spindle', 'a spoon', 'a spray', 'a spring', 'a spur', 'a square', 'a stamp', 'a stand', 'a staple', 'a station', 'a statue', 'a stick', 'a sticker', 'a stitch', 'a stone', 'a stop', 'a strap', 'a strip', 'a suit', 'a sunshade', 'a surface', 'a switch', 'a syringe', 'a table', 'a tablet', 'a tag', 'a tape', 'a target', 'a tattoo', 'a telephone', 'a telescope', 'a tent', 'a terminal', 'a texture', 'a thread', 'a ticket', 'a tile', 'a timer', 'a tin', 'a tire', 'a tissue', 'a tool', 'a toothbrush', 'a torch', 'a toy', 'a tracker', 'a tractor', 'a trailer', 'a train', 'a tram', 'a trap', 'a tray', 'a tree', 'a triangle', 'a trigger', 'a tripod', 'a trophy', 'a truck', 'a tube', 'a turbine', 'a turntable', 'a tweezers', 'a typewriter', 'an umbrella', 'an uniform', 'an utensil', 'a valve', 'a vase', 'a vehicle', 'a veil', 'a vein', 'a vent', 'a vest', 'a video', 'a viewer', 'a visor', 'a voice', 'a wagon', 'a wallet', 'a wand', 'a wardrobe', 'a washer', 'a watch', 'a water', 'a weapon', 'a web', 'a wedge', 'a wheel', 'a whip', 'a whistle', 'a widget', 'a wig', 'a winder', 'a window', 'a wing', 'a wire', 'a wood', 'a wool', 'a wrench', 'a wristband', 'a yarn', 'a zipper'],
+      
+      //OK ⚙️ Process-Oriented Gerund Verbs: 47
+      processGerunds: ['adapting', 'amplifying', 'analysing', 'centering', 'channeling', 'clarifying', 'combining', 'communicating', 'conveying', 'conceiving', 'cultivating', 'disclosing', 'empowering', 'enabling', 'endorsing', 'expanding', 'experimenting', 'expressing', 'foregrounding', 'fostering', 'growing', 'implementing', 'improving', 'including', 'integrating', 'maximizing', 'materializing', 'mediating', 'nurturing', 'performing', 'preserving', 'prioritizing', 'prompting', 'pushing', 'redefining', 'reframing', 'reinterpreting', 'restoring', 'revealing', 'rewriting', 'sensitizing', 'strengthening', 'supporting', 'sustaining', 'synthesizing', 'teaching', 'translating', 'unfolding'],
+      
+      //OK 🧠 Feminist-Oriented Nouns: 77
+      feministNouns: ['accessibility', 'activism', 'affect', 'agency', 'awareness', 'care', 'cyborg', 'collaboration', 'collectivity', 'consciousness', 'cooperation', 'critique', 'decoloniality', 'democracy', 'difference', 'dignity', 'disability', 'discourse', 'diversity', 'ecology', 'embodiment', 'emotion', 'empathy', 'empowerment', 'engagement', 'equality', 'equity', 'ethics', 'experience', 'fairness', 'feminism', 'fluidity', 'freedom', 'friendship', 'gender', 'generosity', 'healing', 'health', 'heterogeneity', 'hope', 'humanity', 'identity', 'inclusion', 'independence', 'individuality', 'intersectionality', 'intimacy', 'justice', 'kindness', 'knowledge', 'labor', 'liberation', 'love', 'marginalization', 'maternity', 'memory', 'multiplicity', 'nature', 'needs', 'networks', 'nonviolence', 'nurturing', 'oppression', 'participation', 'patriarchy', 'peace', 'pleasure', 'pluralism', 'power', 'privacy', 'queerness', 'reciprocity', 'relationality', 'resistance', 'rights', 'safety', 'self-determination', 'sensitivity', 'sexuality', 'solidarity', 'subjectivity', 'support', 'sustainability', 'trust', 'understanding', 'vulnerability', 'wellbeing', 'wholeness'],
+      
+      //OK 🧠 Feminist-Oriented Adjectives: 75
+      feministAdjectives: ['accessible', 'affective', 'anthropological', 'caring', 'cyborg', 'cognitive', 'collective', 'collaborative', 'communal', 'compassionate', 'conscious', 'cooperative', 'decolonial', 'dialogic', 'dignified', 'ecofeminist', 'ecological', 'emancipatory', 'embodied', 'empathetic', 'empowering', 'enabling', 'engaged', 'ethical', 'fair', 'feminist', 'flexible', 'fluid', 'free', 'generous', 'healing', 'heterogeneous', 'holistic', 'hopeful', 'human', 'inclusive', 'independent', 'intersectional', 'intimate', 'just', 'kind', 'liberating', 'loving', 'marginalized', 'maternal', 'multiple', 'natural', 'nurturing', 'participatory', 'peaceful', 'pluralistic', 'queer', 'reciprocal', 'reflexive', 'relational', 'resistant', 'safe', 'self-determined', 'sensitive', 'sexual', 'solidary', 'subjective', 'supportive', 'sustainable', 'trusting', 'understanding', 'vulnerable', 'whole'],
+      
+      //OK 💫 Design Nouns: 68
+      designNouns: ['aid', 'agenda', 'aesthetic', 'artifacts', 'arts', 'beliefs', 'behaviours', 'blueprints', 'boundaries', 'concepts', 'core', 'data', 'designs', 'domesticity', 'dynamics', 'elements', 'environments', 'experiences', 'flows', 'forms', 'frameworks', 'functions', 'futures', 'goals', 'graphics', 'guidelines', 'identities', 'ideologies', 'information', 'innovations', 'interactions', 'interfaces', 'knowledge', 'languages', 'layouts', 'materials', 'meanings', 'mechanisms', 'methods', 'methodologies', 'models', 'movements', 'narratives', 'needs', 'networks', 'objects', 'operations', 'paradigms', 'patterns', 'perceptions', 'performances', 'philosophies', 'plans', 'policies', 'practices', 'principles', 'processes', 'products', 'programs', 'projects', 'prototypes', 'realities', 'relations', 'resources', 'roles', 'scenarios', 'services', 'situations', 'solutions', 'spaces', 'strategies', 'structures', 'studies', 'systems', 'technologies', 'theories', 'tools', 'typologies', 'users', 'values', 'visions', 'worlds'],
+      
+      //OK 🛠️ past Design Verbs: 42
+      pastDesignVerbs: ['adorned', 'altered', 'built', 'conceptualised', 'configured', 'constructed', 'conceived', 'crafted', 'customised', 'designed', 'developed', 'drafted', 'drew', 'edited', 'envisioned', 'fabricated', 'furnished', 'generated', 'imagined', 'innovated', 'invented', 'made', 'modelled', 'personalised', 'photographed', 'pictured', 'produced', 'prototyped', 'realised', 'rendered', 'recycled', 'refurbished', 'repurposed', 'reshaped', 'rethought', 'shaped', 'sketched', 'transformed', 'visualized']
+    };
+
+    let currentMode = '4';
+    let currentCategory = 'domestic';
+    let currentRecipe = [];
+    let lockedStates = [];
+
+    function random(arr) {
+      return arr[Math.floor(Math.random() * arr.length)];
+    }
+
+    function generateRecipe() {
+      if (currentMode === '4' && currentCategory === 'domestic') {
+        // Domestic 4: [Imperative Design Verb] + [Indefinite Article + Domestic Product Noun] + [Process-oriented Gerund Verb] + [Feminist-oriented Noun]
+        return [
+          capitalize(random(wordBanks.imperativeVerbs)),
+          random(wordBanks.domesticNouns),
+          random(wordBanks.processGerunds),
+          random(wordBanks.feministNouns)
+        ];
+      } else if (currentMode === '5' && currentCategory === 'domestic') {
+        // Domestic 5: [Imperative Design Verb] + [Indefinite Article + Domestic Product Noun] + [Process-oriented Gerund Verb] + [Feminist-oriented Adjective] + [Design Noun]
+        return [
+          capitalize(random(wordBanks.imperativeVerbs)),
+          random(wordBanks.domesticNouns),
+          random(wordBanks.processGerunds),
+          random(wordBanks.feministAdjectives),
+          random(wordBanks.designNouns)
+        ];
+      } else if (currentMode === 'whatif' && currentCategory === 'domestic') {
+        // Domestic WHAT IF: WHAT if + [Feminist-oriented Noun] + [past Design Verb] + [Indefinite Article + Domestic Product Noun]
+        return [
+          'What if',
+          random(wordBanks.feministNouns),
+          random(wordBanks.pastDesignVerbs),
+          random(wordBanks.domesticNouns)
+        ];
+      } else if (currentMode === '4' && currentCategory === 'general') {
+        // General 4: [Imperative Design Verb] + [Indefinite Article + Product Noun] + [Process-oriented Gerund Verb] + [Feminist-oriented Noun]
+        return [
+          capitalize(random(wordBanks.imperativeVerbs)),
+          random(wordBanks.generalNouns),
+          random(wordBanks.processGerunds),
+          random(wordBanks.feministNouns)
+        ];
+      } else if (currentMode === '5' && currentCategory === 'general') {
+        // General 5: [Imperative Design Verb] + [Indefinite Article + Product Noun] + [Process-oriented Gerund Verb] + [Feminist-oriented Adjective] + [Design Noun]
+        return [
+          capitalize(random(wordBanks.imperativeVerbs)),
+          random(wordBanks.generalNouns),
+          random(wordBanks.processGerunds),
+          random(wordBanks.feministAdjectives),
+          random(wordBanks.designNouns)
+        ];
+      } else if (currentMode === 'whatif' && currentCategory === 'general') {
+        // General WHAT IF: WHAT if + [Feminist-oriented Noun] + [past Design Verb] + [Indefinite Article + Product Noun]
+        return [
+          'What if',
+          random(wordBanks.feministNouns),
+          random(wordBanks.pastDesignVerbs),
+          random(wordBanks.generalNouns)
+        ];
+      }
+    }
+
+    function capitalize(str) {
+      return str.charAt(0).toUpperCase() + str.slice(1);
+    }
+
+    function renderPills() {
+      const container = document.getElementById('pillsContainer');
+      container.innerHTML = '';
+      
+      currentRecipe.forEach((word, i) => {
+        const pill = document.createElement('div');
+        pill.className = 'pill' + (lockedStates[i] ? ' locked' : '');
+        pill.innerHTML = `
+          <div class="pill-check"></div>
+          <span class="pill-text">${word}</span>
+        `;
+        pill.onclick = () => toggleLock(i);
+        container.appendChild(pill);
+      });
+    }
+
+    function toggleLock(index) {
+      lockedStates[index] = !lockedStates[index];
+      renderPills();
+    }
+
+    function refreshRecipe() {
+      const pills = document.querySelectorAll('.pill');
+      pills.forEach(pill => pill.classList.add('shuffling'));
+      
+      setTimeout(() => {
+        const newRecipe = generateRecipe();
+        currentRecipe = currentRecipe.map((word, i) => 
+          lockedStates[i] ? word : newRecipe[i]
+        );
+        renderPills();
+      }, 150);
+    }
+
+    function copyRecipe() {
+      const text = currentRecipe.join(' ');
+      navigator.clipboard.writeText(text).then(() => {
+        const toast = document.getElementById('toast');
+        toast.classList.add('show');
+        setTimeout(() => toast.classList.remove('show'), 2000);
+      });
+    }
+
+    function setMode(mode) {
+      currentMode = mode;
+      lockedStates = [];
+      currentRecipe = generateRecipe();
+      renderPills();
+      
+      // Only update mode buttons, leave category buttons alone
+      document.querySelectorAll('.control-group:last-child button').forEach(btn => {
+        btn.classList.remove('active');
+      });
+      document.getElementById('mode-' + mode).classList.add('active');
+    }
+
+    function setCategory(cat) {
+      currentCategory = cat;
+      lockedStates = [];
+      currentRecipe = generateRecipe();
+      renderPills();
+      
+      // Update category buttons
+      document.getElementById('cat-domestic').classList.toggle('active', cat === 'domestic');
+      document.getElementById('cat-general').classList.toggle('active', cat === 'general');
+    }
+
+    function showPage(page) {
+      document.getElementById('page-home').style.display = page === 'home' ? 'block' : 'none';
+      document.getElementById('page-project').classList.toggle('active', page === 'project');
+      document.getElementById('page-manifesto').classList.toggle('active', page === 'manifesto');
+      document.getElementById('page-toolbox').classList.toggle('active', page === 'toolbox');
+      document.getElementById('page-opensource').classList.toggle('active', page === 'opensource');
+      
+      document.querySelectorAll('header button').forEach(btn => btn.classList.remove('active'));
+      document.getElementById('btn-' + page).classList.add('active');
+      
+      // Remove active class from all mobile buttons (no active state in hamburger menu)
+      document.querySelectorAll('.side-menu button').forEach(btn => btn.classList.remove('active'));
+      
+      // Mobile header always shows website name
+      document.getElementById('mobileTitle').textContent = '404: trad-designer';
+      
+      if (window.innerWidth <= 768) {
+        toggleMenu();
+      }
+      
+      window.scrollTo(0, 0);
+    }
+
+    function toggleMenu() {
+      const menu = document.getElementById('sideMenu');
+      const overlay = document.getElementById('menuOverlay');
+      const hamburger = document.getElementById('hamburger');
+      
+      menu.classList.toggle('active');
+      overlay.classList.toggle('active');
+      hamburger.classList.toggle('active');
+    }
+
+    function downloadFile(type) {
+      const toast = document.getElementById('toast');
+      let fileName = '';
+      if (type === 'instruction') {
+        fileName = '404: trad-designer_instruction.pdf';
+      } else if (type === 'printing') {
+        fileName = '404: trad-designer_printing.pdf';
+      }
+      
+      // Create a temporary file content (placeholder)
+      const content = "This is a placeholder file for " + fileName + ". In a real implementation, this would be the actual file content.";
+      const blob = new Blob([content], { type: 'application/pdf' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = fileName;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      
+      toast.textContent = `Downloading ${fileName}`;
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 2000);
+    }
+
+    // Initialize
+    currentRecipe = generateRecipe();
+    lockedStates = new Array(currentRecipe.length).fill(false);
+    renderPills();
+    
+    // Ensure domestic category is selected by default
+    setCategory('domestic');
+  </script>
+</body>
+</html>
