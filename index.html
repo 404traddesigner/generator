@@ -944,26 +944,38 @@
       return str.charAt(0).toUpperCase() + str.slice(1);
     }
 
-    function renderPills() {
-      const container = document.getElementById('pillsContainer');
-      container.innerHTML = '';
-      
-      currentRecipe.forEach((word, i) => {
-        const pill = document.createElement('div');
-        pill.className = 'pill' + (lockedStates[i] ? ' locked' : '');
-        pill.innerHTML = `
-          <div class="pill-check"></div>
-          <span class="pill-text">${word}</span>
-        `;
-        pill.onclick = () => toggleLock(i);
-        container.appendChild(pill);
-      });
+function renderPills() {
+  const container = document.getElementById('pillsContainer');
+  container.innerHTML = '';
+  
+  currentRecipe.forEach((word, i) => {
+    const pill = document.createElement('div');
+    pill.className = 'pill' + (lockedStates[i] ? ' locked' : '');
+    
+    // Hide check circle only for the first pill in WHAT IF mode
+    if (currentMode === 'whatif' && i === 0) {
+      pill.innerHTML = `
+        <span class="pill-text">${word}</span>
+      `;
+    } else {
+      pill.innerHTML = `
+        <div class="pill-check"></div>
+        <span class="pill-text">${word}</span>
+      `;
     }
+    
+    pill.onclick = () => toggleLock(i);
+    container.appendChild(pill);
+  });
+}
 
-    function toggleLock(index) {
-      lockedStates[index] = !lockedStates[index];
-      renderPills();
-    }
+function toggleLock(index) {
+  // Prevent locking the first pill in WHAT IF mode
+  if (currentMode === 'whatif' && index === 0) return;
+  
+  lockedStates[index] = !lockedStates[index];
+  renderPills();
+}
 
     function refreshRecipe() {
       const pills = document.querySelectorAll('.pill');
