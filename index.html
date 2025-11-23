@@ -1050,31 +1050,32 @@ function toggleLock(index) {
       hamburger.classList.toggle('active');
     }
 
-    function downloadFile(type) {
-      const toast = document.getElementById('toast');
-      let fileName = '';
-      if (type === 'instruction') {
-        fileName = '404: trad-designer_instruction.pdf';
-      } else if (type === 'printing') {
-        fileName = '404: trad-designer_printing.pdf';
-      }
-      
-      // Create a temporary file content (placeholder)
-      const content = "This is a placeholder file for " + fileName + ". In a real implementation, this would be the actual file content.";
-      const blob = new Blob([content], { type: 'application/pdf' });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = fileName;
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      URL.revokeObjectURL(url);
-      
-      toast.textContent = `Downloading ${fileName}`;
-      toast.classList.add('show');
-      setTimeout(() => toast.classList.remove('show'), 2000);
-    }
+function downloadFile(type) {
+  let fileName = '';
+  let fileUrl = '';
+  
+  if (type === 'instruction') {
+    fileName = '404: trad-designer_instruction.pdf';
+    fileUrl = '404: trad-designer_instruction.pdf';
+  } else if (type === 'printing') {
+    fileName = '404: trad-designer_printing.pdf';
+    fileUrl = '404: trad-designer_printing.pdf';
+  }
+  
+  // Creare un link temporaneo per il download
+  const a = document.createElement('a');
+  a.href = fileUrl;
+  a.download = fileName;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  
+  // Mostrare il toast
+  const toast = document.getElementById('toast');
+  toast.textContent = `Downloading ${fileName}`;
+  toast.classList.add('show');
+  setTimeout(() => toast.classList.remove('show'), 2000);
+}
 
     // Initialize
     currentRecipe = generateRecipe();
